@@ -121,7 +121,7 @@ const Addblog = () => {
           type="submit"
           className="mt-8 w-40 h-10 bg-blue-500 text-white rounded cursor-pointer text-sm hover:bg-blue-600 ml-8 mb-12"
         >
-          Add Blog
+          Add Blog.......
         </button>
       </form>
     </div>
