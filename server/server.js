@@ -11,8 +11,8 @@ const app = express();
 await connectDB();
 
 //Middlewares
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 //Routes
 app.get('/',(req,res)=>res.send("API is working"));
@@ -23,6 +23,7 @@ app.use('/api/blog', blogRouter);//for blog page
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, ()=>
-console.log("Serving is running on port " + PORT));
+console.log(`Server is running on port http://localhost:${PORT}`));
 
 export default app;
+process.env.PORT
