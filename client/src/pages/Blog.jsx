@@ -31,7 +31,7 @@ const Blog = () => {
   //function for comments, Api Integration, ---> /api/blog/comments
   const fetchComments = async () => {
     try {
-      const { data } = await axios.post(`/api/blog/comments`, { blogId: id });
+      const { data } = await axios.get(`/api/blog/comments/${id}`, { blogId: id });
 
       if (data.success) {
         setComments(data.comments);
@@ -48,7 +48,8 @@ const Blog = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(`/api/blog/add-comment`, {
-        blogId: id,
+        // blog,name,content should be same from blogController
+        blog: id,
         name,
         content,
       });

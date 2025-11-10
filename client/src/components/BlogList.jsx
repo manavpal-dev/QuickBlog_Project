@@ -8,6 +8,12 @@ const BlogList = () => {
   const {blogs, input} = useAppContext();
 
   // Api integration
+  
+
+
+
+
+  // filteredBlogs function
   const filteredBlogs = ()=>{
     if(input === ''){
       return blogs

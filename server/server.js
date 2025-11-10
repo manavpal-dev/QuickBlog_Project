@@ -20,7 +20,7 @@ app.get("/", (req, res) => res.send("API is working"));
 app.use("/api/admin", adminRouter); //for admin page
 app.use("/api/blog", blogRouter); //for blog page
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.listen(PORT, () =>
   console.log(`Server is running on port http://localhost:${PORT}`)

@@ -72,7 +72,7 @@ const Addblog = () => {
       }
     } catch (error) {
       toast.error(error.message);
-    } finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -88,9 +88,9 @@ const Addblog = () => {
     <div className="bg-blue-50/50 w-full h-fit sm:min-h-screen">
       <form onSubmit={onSubmitHandler} className="my-10 bg-white ml-10 w-5/6">
         <div className="py-10 pl-10 flex flex-col">
-          <p className="mb-4 text-gray-700 text-md" for="myfile">
+          <label className="mb-4 text-gray-700 text-md" htmlFor="myfile">
             Upload thumbnail
-          </p>
+          </label>
 
           <label className="w-1/4 lg:w-1/7 mb-4" htmlFor="image">
             <img
@@ -137,15 +137,19 @@ const Addblog = () => {
           <div className="max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative ">
             {/* useRef used */}
             <div ref={editorRef}></div>
-          {loading && (
-
-            <div className="absolute right-0 top-0 bottom-0 left-0 flex items-center justify-center bg-black/10 mt-2">
-              <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>
-            </div>
-          )}
-            <button disabled={loading}
+            {loading && (
+              <div className="absolute right-0 top-0 bottom-0 left-0 flex items-center justify-center bg-black/10 mt-2">
+                <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>
+              </div>
+            )}
+            <button
+              disabled={loading}
               type="button"
-              className={`absolute bottom-1 right-2 ml-2 text-xs  px-4 py-1.5 rounded text-white ${loading ? "bg-black/40 cursor-not-allowed" : " bg-black/70 hover:underline cursor-pointer"}`}
+              className={`absolute bottom-1 right-2 ml-2 text-xs  px-4 py-1.5 rounded text-white ${
+                loading
+                  ? "bg-black/40 cursor-not-allowed"
+                  : " bg-black/70 hover:underline cursor-pointer"
+              }`}
               onClick={generateContent}
             >
               Generate With AI

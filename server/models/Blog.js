@@ -22,7 +22,7 @@ const blogSchema = new mongoose.Schema({
   },
   isPublished: {
     type: Boolean,
-    required: true,
+    required: false,
   },
 },{timestamps:true});
 

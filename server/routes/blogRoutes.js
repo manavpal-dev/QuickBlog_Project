@@ -25,7 +25,7 @@ blogRouter.post("/toggle-publish", auth, togglePublish);
 
 //comments api
 blogRouter.post("/add-comment", addComment);
-blogRouter.post("/comments", getBlogComments);
+blogRouter.get("/comments/:id", getBlogComments);
 
 //gemni api
 blogRouter.post("/generate",auth, generateContent)
