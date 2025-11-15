@@ -33,7 +33,7 @@ const Footer = () => {
         <hr className="h-[0.001% border w-[90%] border-gray-400 " />
       </div>
       <p className="text-center pb-4 text-[1rem] font-normal text-gray-500/100">
-        Copyright 2025 © QuickBlog GreatStack - All Right Reserved.
+        Copyright 2025 © QuickBlog Manav Pal - All Right Reserved.
       </p>
     </div>
   );
