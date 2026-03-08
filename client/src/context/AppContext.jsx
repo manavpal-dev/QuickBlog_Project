@@ -22,18 +22,18 @@ export const AppProvider = ({ children }) => {
 
       data.success ? setBlogs(data.blogs) : toast.error(data.message);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
   // useEffect for rendering the blogs
   useEffect(() => {
-    fetchBlogs();
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
       axios.defaults.headers.common["Authorization"] = `${storedToken}`;
     }
+    fetchBlogs();
   }, []);
 
   const value = {

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { parse } from "marked";
 
 const Addblog = () => {
-  const { axios,fetchBlogs } = useAppContext();
+  const { axios, fetchBlogs } = useAppContext();
   const [isAdding, setIsAdding] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -19,10 +19,42 @@ const Addblog = () => {
   const [category, setCategory] = useState("Startup");
   const [isPublished, setIsPublished] = useState(false);
 
+  const [previewImage, setPreviewImage] = useState(assets.upload_area);
+
+  useEffect(() => {
+    if (!image) {
+      setPreviewImage(assets.upload_area);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(image);
+    setPreviewImage(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [image]);
+
   // function for onSubmitHandler
   const onSubmitHandler = async (e) => {
     try {
       e.preventDefault();
+      
+      if (!image) {
+        return toast.error("Please upload an image");
+      }
+      
+      if (image.size > 2 * 1024 * 1024) {
+        return toast.error("Image must be less than 2MB");
+      }
+      
+      const description = quillRef.current.root.innerText.trim();
+      
+      if (!description) {
+        return toast.error("Please enter blog content");
+      }
+      
+      if (title.length < 5) {
+        return toast.error("Title must be at least 5 characters");
+      }
       setIsAdding(true);
 
       const blog = {
@@ -49,18 +81,21 @@ const Addblog = () => {
         setSubTitle("");
         quillRef.current.root.innerHTML = "";
         setCategory("Startup");
+        setIsPublished(false);
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+     toast.error(error.response?.data?.message || error.message);
     } finally {
       setIsAdding(false); //rest button
     }
   };
 
   const generateContent = async () => {
-    if (!title) return toast.error("Please enter a title");
+    if (!title.trim()) return toast.error("Please enter a title");
+
+    if (loading) return;
 
     try {
       setLoading(true);
@@ -74,18 +109,17 @@ const Addblog = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    //Initiate Quill only once
-    if (!quillRef.current && editorRef.current) {
-      quillRef.current = new Quill(editorRef.current, { theme: "snow" });
-    }
-  }, []);
+ useEffect(() => {
+  if (!quillRef.current && editorRef.current) {
+    quillRef.current = new Quill(editorRef.current, { theme: "snow" });
+  }
+}, []);
 
   return (
     <div className="bg-blue-50/50 w-full h-fit sm:min-h-screen">
@@ -96,13 +130,11 @@ const Addblog = () => {
           </label>
 
           <label className="w-1/4 lg:w-1/7 mb-4" htmlFor="image">
-            <img
-              src={!image ? assets.upload_area : URL.createObjectURL(image)}
-              alt=""
-            />
+            <img src={previewImage} alt="thumbnail preview" />
             <input
               onChange={(e) => setImage(e.target.files[0])}
               type="file"
+              accept="file"
               id="image"
               className="border w-1/5"
               required
@@ -163,6 +195,7 @@ const Addblog = () => {
         {/* Blog category section */}
         <p className="mt-4 ml-8">Blog category</p>
         <select
+          value={category}
           onChange={(e) => setCategory(e.target.value)}
           name="category"
           className="mt-2 ml-8 px-3 py-2 border text-gray-500 border-gray-300 outline-none rounded"
@@ -188,7 +221,7 @@ const Addblog = () => {
         </div>
 
         <button
-          disabled={isAdding}
+          disabled={isAdding || !image}
           type="submit"
           className="mt-8 w-40 h-10 bg-blue-500 text-white rounded cursor-pointer text-sm hover:bg-blue-600 ml-8 mb-12"
         >
