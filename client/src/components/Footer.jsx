@@ -32,8 +32,10 @@ const Footer = () => {
       <div className="flex justify-center mt-9 mb-5">
         <hr className="h-[0.001% border w-[90%] border-gray-400 " />
       </div>
+
       <p className="text-center pb-4 text-[1rem] font-normal text-gray-500/100">
         &#169; {new Date().getFullYear()} QuickBlog Manav Pal - All Right Reserved.
+
       </p>
     </div>
   );
