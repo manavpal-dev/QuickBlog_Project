@@ -152,3 +152,107 @@
 //     res.json({ success: false, message: error.message });
 //   }
 // };
+
+import { pool } from "../configs/db.js";
+import fs from "fs";
+import imagekit from "../configs/imageKit.js";
+import main from "../configs/gemni.js";
+
+// Add blog function
+export const addBlog = async (req, res) => {
+  try {
+    const { title, subTitle, description, category, isPublished } = JSON.parse(
+      req.body.blog,
+    );
+
+    const imageFile = req.file;
+
+    // validation
+    if (!title || !description || !category || !imageFile) {
+      return res.json({ success: false, message: "Missing required fields" });
+    }
+
+    // read file
+    const fileBuffer = fs.readFileSync(imageFile.path);
+
+    // upload to ImageKit
+    const response = await imagekit.upload({
+      file: fileBuffer,
+      fileName: imageFile.originalname,
+      folder: "/blogs",
+    });
+
+    // optimized URL
+    const optimizedImageUrl = imagekit.url({
+      path: response.filePath,
+      transformation: [
+        { quality: "auto" },
+        { format: "webp" },
+        { width: "1280" },
+      ],
+    });
+
+    const image = optimizedImageUrl;
+
+    await pool.query(
+      `INSERT INTO blogs
+      (title, sub_title, description, image, category, is_published)
+      VALUES (?, ?, ?, ?, ?, ?)`,
+      [title, subTitle, description, image, category, isPublished],
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// getAllBlogs Function
+export const getAllBlogs = async (req, res) => {
+  try {
+    const [blogs] = await pool.query(
+      "SELECT * FROM blogs WHERE is_published = true ORDER BY created_at DESC",
+    );
+
+    res.json({ success: true, blogs });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// addComment function
+export const addComment = async (req, res) => {
+  try {
+    const { blog_id, name, content, isApproved } = req.body;
+
+    await pool.query(
+      `INSERT INTO comments (blog_id, name, content, is_approved) VALUES (?, ?, ?, ?)`,
+      [blog_id, name, content, isApproved],
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export const generateContent = async (req, res) => {
+  try {
+    const { prompt } = req.body;
+
+    if (!prompt) {
+      return res.json({
+        success: false,
+        message: "Please Enter prompt for generate content",
+      });
+    }
+
+    const content = await main(
+      prompt +
+        " Generate a blog content for this topic in a simple text format",
+    );
+    res.json({ success: true, content });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};

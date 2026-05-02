@@ -1,19 +1,19 @@
 import express from "express";
-// import {
-//   adminLogin,
+import {
+  adminLogin,
 //   approveCommentById,
 //   deleteCommentById,
 //   getAllBlogsAdmin,
 //   getAllComments,
 //   getDashboard,
-// } from "../controllers/adminController.js";
+} from "../controllers/adminController.js";
 import auth from "../middleware/auth.js";
 
 const adminRouter = express.Router();
 
 // Api Integration ---> /api/admin/....
 
-// adminRouter.post("/login", adminLogin);
+adminRouter.post("/login", adminLogin);
 
 // adminRouter.get("/comments", auth, getAllComments);
 
