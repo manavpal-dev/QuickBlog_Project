@@ -17,8 +17,8 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("API is working"));
 
 // Api Routes
-app.use("/api/admin", adminRouter); //for admin page
-app.use("/api/blog", blogRouter); //for blog page
+// app.use("/api/admin", adminRouter); //for admin page
+// app.use("/api/blog", blogRouter); //for blog page
 
 const PORT = 3000;
 

@@ -1,31 +1,20 @@
-import mongoose from 'mongoose';
+import { pool } from "../configs/db.js";
 
-const blogSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  subTitle: {
-    type: String,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  category: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  isPublished: {
-    type: Boolean,
-    required: false,
-  },
-},{timestamps:true});
+export const addBlog = async (req, res) => {
+  try {
+    const { title, subTitle, description, category, isPublished } =
+      JSON.parse(req.body.blog);
 
-const Blog = mongoose.model('blog', blogSchema);
+    await pool.query(
+      `INSERT INTO blogs
+      (title, sub_title, description, image, category, is_published)
+      VALUES (?, ?, ?, ?, ?, ?)`,
+      [title, subTitle, description, image, category, isPublished]
+    );
 
-export default Blog;
+    res.json({ success: true });
+
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};

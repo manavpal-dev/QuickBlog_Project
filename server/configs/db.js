@@ -1,16 +1,24 @@
-import mongoose, { connect } from "mongoose";
+import mysql from "mysql2/promise";
 
-const connectDB = async () => {
+const pool = mysql.createPool({
+  host: "localhost",
+  user:"manavapp",
+  password:"123456",
+  database:"quickblog",
+  waitForConnections:true,
+  connectionLimit:10
+});
+
+const connectDB = async () =>{
   try {
-    mongoose.connection.on("connected", () =>
-      console.log("Database Connected"),
-    );
-
-    await mongoose.connect(`${process.env.MONGO_URI}/quickblog`);
+    const connection = await pool.getConnection();
+    console.log("MySQL Connected");
+    connection.release();
   } catch (error) {
     console.log(error.message);
-    process.exit(1); // stop app if db fails
+    process.exit(1);
   }
 };
 
+export {pool};
 export default connectDB;
