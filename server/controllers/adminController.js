@@ -98,6 +98,7 @@
 import jwt from "jsonwebtoken";
 import { pool } from "../configs/db.js";
 
+// adminLogin Function
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -111,8 +112,111 @@ export const adminLogin = async (req, res) => {
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET);
 
-    res.json({success:true, token});
+    res.json({ success: true, token });
   } catch (error) {
-    res.json({success:false, message: error.message});
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// getAllBlogsAdmin function
+export const getAllBlogsAdmin = async (req, res) => {
+  try {
+    const [blogs] = await pool.query(
+      "SELECT * FROM blogs ORDER BY created_at DESC",
+    );
+
+    res.json({ success: true, blogs });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// getAllComments function
+export const getAllComments = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM comments ORDER BY created_at DESC",
+    );
+
+    res.json({ success: true, result });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// getDashboard Function
+export const getDashboard = async (req, res) => {
+  try {
+    const [recentBlogs] = await pool.query(
+      "SELECT * FROM blogs ORDER BY created_at DESC LIMIT 5",
+    );
+
+    const [blogCount] = await pool.query("SELECT COUNT(*) AS total FROM blogs");
+
+    const [commentCount] = await pool.query(
+      "SELECT COUNT(*) AS total FROM comments",
+    );
+
+    const [drafts] = await pool.query(
+      "SELECT COUNT(*) AS total FROM comments WHERE is_approved = 0",
+    );
+
+    const dashboardData = {
+      blogCount,
+      commentCount,
+      drafts,
+      recentBlogs,
+    };
+
+    res.json({ success: true, dashboardData });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// deleteCommentById function
+export const deleteCommentById = async (req, res) => {
+  try {
+    const id = Number(req.body.id);
+
+    if (!id) {
+      return res.json({ success: false, message: `Comment Id is required` });
+    }
+
+    const [result] = await pool.query("DELETE FROM comments WHERE id = ?", [
+      id,
+    ]);
+
+    if (!result.affectedRows) {
+      return res.json({ success: false, message: "Comment not found" });
+    }
+
+    res.json({ success: true, message: "Comment deleted successfully" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// approveCommentById function
+export const approveCommentById = async (req, res) => {
+  try {
+    const id = Number(req.body.id);
+
+    if (!id) {
+      return res.json({
+        success: false,
+        message: "Comment ID is required",
+      });
+    }
+
+   const [result] = await pool.query("UPDATE comments SET is_approved = 1 WHERE id = ?", [id]);
+
+   if(result.affectedRows === 0){
+    return res.json({success:false, message:"Comment not found"})
+  }
+
+    res.json({ success: true, message: "Comment Approved Successfully" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
   }
 };

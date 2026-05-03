@@ -6,7 +6,7 @@ import {
   generateContent,
   getAllBlogs,
   getBlogById,
-  //   getBlogComments,
+  getBlogComments,
   togglePublish,
 } from "../controllers/blogController.js";
 import upload from "../middleware/multer.js";
@@ -25,7 +25,7 @@ blogRouter.post("/toggle-publish", auth, togglePublish);
 
 // //comments api
 blogRouter.post("/add-comment", addComment);
-// blogRouter.get("/comments/:id", getBlogComments);
+blogRouter.get("/comments/:id", getBlogComments);
 
 // //gemni api
 blogRouter.post("/generate", auth, generateContent);
