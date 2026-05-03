@@ -158,7 +158,14 @@ import fs from "fs";
 import imagekit from "../configs/imageKit.js";
 import main from "../configs/gemni.js";
 
-// Add blog function
+//helper function
+const getBlogIdFromDb = async (id) => {
+  const [rows] = await pool.query("SELECT * FROM blogs WHERE id = ?", [id]);
+
+  return rows[0];
+};
+
+// addBlog function
 export const addBlog = async (req, res) => {
   try {
     const { title, subTitle, description, category, isPublished } = JSON.parse(
@@ -220,22 +227,94 @@ export const getAllBlogs = async (req, res) => {
   }
 };
 
-// addComment function
-export const addComment = async (req, res) => {
+// getBlogById function
+export const getBlogById = async (req, res) => {
   try {
-    const { blog_id, name, content, isApproved } = req.body;
+    const { blogId } = req.params;
 
-    await pool.query(
-      `INSERT INTO comments (blog_id, name, content, is_approved) VALUES (?, ?, ?, ?)`,
-      [blog_id, name, content, isApproved],
-    );
+    const blog = await getBlogIdFromDb(blogId);
 
-    res.json({ success: true });
+    if (!blog) {
+      return res.json({ success: false, message: "Blog not found" });
+    }
+
+    res.json({ success: true, blog });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
 };
 
+// deleteBlogById function
+export const deleteBlogById = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const blog = await getBlogIdFromDb(id);
+
+    if (!blog) {
+      return res.json({ success: false, message: "Blog not found" });
+    }
+
+    await pool.query("DELETE FROM blogs WHERE id = ?", [id]);
+
+    res.json({
+      success: true,
+      message: `Blog "${blog.title}" deleted successfully`,
+    });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// togglePublish function
+export const togglePublish = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const blog = await getBlogIdFromDb(id);
+
+    if (!blog) {
+      return res.json({ success: false, message: `Blog "${id}" not found` });
+    }
+
+    console.log("Befor isPublished : ", blog.is_published);
+
+    const newStatus = !blog.is_published;
+
+    console.log("After isPublished : ", newStatus);
+
+    const [result] = await pool.query(
+      "UPDATE blogs SET is_published = ? WHERE id = ?",
+      [newStatus, id],
+    );
+
+    console.log("Result :", result);
+
+    res.json({
+      success: true,
+      message: `Blog "${blog.title}" is updated successfully`,
+    });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// addComment function
+export const addComment = async (req, res) => {
+  try {
+    const { blog_id, name, content } = req.body;
+
+    await pool.query(
+      `INSERT INTO comments (blog_id, name, content) VALUES (?, ?, ?)`,
+      [blog_id, name, content],
+    );
+
+    res.json({ success: true, message: "Comment added" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// generateContent function
 export const generateContent = async (req, res) => {
   try {
     const { prompt } = req.body;
