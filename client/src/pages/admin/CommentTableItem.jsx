@@ -3,7 +3,7 @@ import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 
 const CommentTableItem = ({ comment, fetchComments }) => {
-  const { blog, createdAt, _id } = comment;
+  const { blog, createdAt, id } = comment;
   const BlogDate = new Date(createdAt);
 
   const { axios } = useAppContext();
@@ -11,7 +11,7 @@ const CommentTableItem = ({ comment, fetchComments }) => {
   const approveComment = async () => {
     try {
       const { data } = await axios.post("/api/admin/approve-comment", {
-        id: _id,
+        id: id,
       });
 
       if (data.success) {
@@ -34,7 +34,7 @@ const CommentTableItem = ({ comment, fetchComments }) => {
       if (!confirm) return;
 
       const { data } = await axios.post("/api/admin/delete-comment", {
-        id: _id,
+        id: id,
       });
 
       if (data.success) {

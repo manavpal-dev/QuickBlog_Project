@@ -50,7 +50,7 @@ const BlogList = () => {
         {filteredBlogs()
           .filter((blog) => (menu === "All" ? true : blog.category === menu))
           .map((blog) => (
-            <BlogCard key={blog._id} blog={blog} />
+            <BlogCard key={blog.id} blog={blog} />
           ))}
       </div>
     </div>

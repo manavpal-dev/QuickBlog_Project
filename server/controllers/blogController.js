@@ -114,7 +114,7 @@ export const deleteBlogById = async (req, res) => {
 // togglePublish function
 export const togglePublish = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id  = Number(req.body.id);
     const blog = await getBlogIdFromDb(id);
 
     if (!blog) {

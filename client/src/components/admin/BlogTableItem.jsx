@@ -4,8 +4,8 @@ import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 
 const BlogTableItem = ({ blog, fetchBlogs, index }) => {
-  const { title, createdAt } = blog;
-  const BlogDate = new Date(createdAt);
+  const { title, created_at } = blog;
+  const BlogDate = new Date(created_at);
 
   //Api call or integration
   const { axios } = useAppContext();
@@ -16,7 +16,7 @@ const BlogTableItem = ({ blog, fetchBlogs, index }) => {
     );
     if (!confirm) return;
     try {
-      const { data } = await axios.post("/api/blog/delete", { id: blog._id });
+      const { data } = await axios.post("/api/blog/delete", { id: blog.id });
       if (data.success) {
         toast.success(data.message);
         await fetchBlogs();
@@ -33,7 +33,7 @@ const BlogTableItem = ({ blog, fetchBlogs, index }) => {
   const togglePublish = async () => {
     try {
       const { data } = await axios.post("/api/blog/toggle-publish", {
-        id: blog._id,
+        id: blog.id,
       });
 
       if (data.success) {
@@ -56,10 +56,10 @@ const BlogTableItem = ({ blog, fetchBlogs, index }) => {
       <td className="px-2 py-4 max-sm:hidden">
         <p
           className={`${
-            blog.isPublished ? "text-green-600" : "text-orange-700"
+            blog.is_published ? "text-green-600" : "text-orange-700"
           }`}
         >
-          {blog.isPublished ? "Publish" : "Unpublish"}
+          {blog.is_published ? "Publish" : "Unpublish"}
         </p>
       </td>
       <td className="px-2 py-4 flex text-xs gap-3">
@@ -67,7 +67,7 @@ const BlogTableItem = ({ blog, fetchBlogs, index }) => {
           onClick={togglePublish}
           className="border px-2 py-0.5 mt-1 rounded cursor-pointer"
         >
-          {blog.isPublished ? "Unpublish" : "Publish"}
+          {blog.is_published ? "Unpublish" : "Publish"}
         </button>
         <img
           onClick={deleteBlog}

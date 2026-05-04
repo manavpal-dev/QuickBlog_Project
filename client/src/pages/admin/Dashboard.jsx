@@ -100,7 +100,7 @@ const Dashboard = () => {
               {dashboard.recentBlogs.map((blog, index) => {
                 return (
                   <BlogTableItem
-                    key={blog._id}
+                    key={blog.id}
                     blog={blog}
                     fetchBlogs={fetchDashboard}
                     index={index + 1}

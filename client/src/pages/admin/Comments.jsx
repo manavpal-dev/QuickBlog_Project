@@ -69,12 +69,12 @@ const Comments = () => {
           <tbody>
             {comments
               .filter((comment) => {
-                if (filter === "Approved") return comment.isApproved === true;
-                return comment.isApproved === false;
+                if (filter === "Approved") return comment.is_approved === 1;
+                return comment.is_approved === 0;
               })
               .map((comment, index) => (
                 <CommentTableItem
-                  key={comment._id}
+                  key={comment.id}
                   comment={comment}
                   index={index + 1}
                   fetchComments={fetchComments}

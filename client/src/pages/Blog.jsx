@@ -49,7 +49,7 @@ const Blog = () => {
     try {
       const { data } = await axios.post(`/api/blog/add-comment`, {
         // blog,name,content should be same from blogController
-        blog: id,
+        blog_id:id,
         name,
         content,
       });

@@ -37,11 +37,11 @@ export const getAllBlogsAdmin = async (req, res) => {
 // getAllComments function
 export const getAllComments = async (req, res) => {
   try {
-    const [result] = await pool.query(
+    const [comments] = await pool.query(
       "SELECT * FROM comments ORDER BY created_at DESC",
     );
 
-    res.json({ success: true, result });
+    res.json({ success: true, comments });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -60,14 +60,14 @@ export const getDashboard = async (req, res) => {
       "SELECT COUNT(*) AS total FROM comments",
     );
 
-    const [drafts] = await pool.query(
+    const [draftsCount] = await pool.query(
       "SELECT COUNT(*) AS total FROM comments WHERE is_approved = 0",
     );
 
     const dashboardData = {
-      blogCount,
-      commentCount,
-      drafts,
+      blogs:blogCount[0].total,
+      comments:commentCount[0].total,
+      drafts:draftsCount[0].total,
       recentBlogs,
     };
 
