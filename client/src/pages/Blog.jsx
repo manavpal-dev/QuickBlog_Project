@@ -95,7 +95,7 @@ const Blog = () => {
       </div>
 
       <div className="mx-5 max-w-5xl md:mx-auto my-10 mt-6">
-        <img className="rounded-3xl mb-5" src={data.image} alt="image" />
+        <img className="rounded-3xl mb-5" src={data.image} alt="image" loading="lazy" />
 
         <div
           className="rich-text max-w-3xl mx-auto"

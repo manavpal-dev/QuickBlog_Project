@@ -12,6 +12,8 @@ const BlogCard = ({ blog }) => {
     >
       <img
         src={image}
+        srcSet={`${image}?tr=w-640,f-webp 640w, ${image}?tr=w-1024,f-webp 1024w, ${image}?tr=w-1280,f-webp 1280w`}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
         alt={title}
         className="aspect-video w-full object-cover"
         loading="lazy"
