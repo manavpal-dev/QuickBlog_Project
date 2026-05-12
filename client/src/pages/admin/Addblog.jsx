@@ -130,11 +130,11 @@ const Addblog = () => {
           </label>
 
           <label className="w-1/4 lg:w-1/7 mb-4" htmlFor="image">
-            <img src={previewImage} alt="thumbnail preview" />
+            <img src={previewImage} alt="thumbnail preview" loading="lazy" />
             <input
               onChange={(e) => setImage(e.target.files[0])}
               type="file"
-              accept="file"
+              accept="image/*"
               id="image"
               className="border w-1/5"
               required

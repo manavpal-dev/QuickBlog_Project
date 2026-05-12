@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { assets } from "../assets/assets";
 import Navbar from "../components/Navbar";
@@ -19,17 +19,17 @@ const Blog = () => {
   const [content, setContent] = useState("");
 
   //function for blogData, Api integration ---> /api/blog/:id
-  const fetchBlogData = async () => {
+  const fetchBlogData = useCallback(async () => {
     try {
       const { data } = await axios.get(`/api/blog/${id}`);
       data.success ? setData(data.blog) : toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
     }
-  };
+  }, [axios, id]);
 
   //function for comments, Api Integration, ---> /api/blog/comments
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const { data } = await axios.get(`/api/blog/comments/${id}`, { blogId: id });
 
@@ -41,7 +41,7 @@ const Blog = () => {
     } catch (error) {
       toast.error(error.message);
     }
-  };
+  }, [axios, id]);
 
   //function for addComment
   const addComment = async (e) => {
@@ -69,7 +69,7 @@ const Blog = () => {
   useEffect(() => {
     fetchBlogData();
     fetchComments();
-  }, []);
+  }, [fetchBlogData, fetchComments]);
 
   return data ? (
     <div className="relative">
@@ -95,7 +95,14 @@ const Blog = () => {
       </div>
 
       <div className="mx-5 max-w-5xl md:mx-auto my-10 mt-6">
-        <img className="rounded-3xl mb-5" src={data.image} alt="image" loading="lazy" />
+        <img
+          className="rounded-3xl mb-5"
+          src={data.image}
+          srcSet={`${data.image}?tr=w-640,f-webp 640w, ${data.image}?tr=w-1024,f-webp 1024w, ${data.image}?tr=w-1280,f-webp 1280w`}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
+          alt="blog cover"
+          loading="lazy"
+        />
 
         <div
           className="rich-text max-w-3xl mx-auto"
@@ -113,7 +120,7 @@ const Blog = () => {
                 className="relative bg-primary/2 border border-primary/5 max-w-xl p-4 rounded text-gray-600"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <img src={assets.user_icon} alt="" className="w-6" />
+                  <img src={assets.user_icon} alt="user icon" className="w-6" loading="lazy" />
                   <p className="font-medium">{item.name}</p>
                 </div>
 
@@ -164,10 +171,10 @@ const Blog = () => {
           <p className="my-4 font-semibold">
             Share this article on social media
           </p>
-          <div className="flex">
-            <img src={assets.facebook_icon} alt="favicon" />
-            <img src={assets.twitter_icon} alt="twitter" />
-            <img src={assets.googleplus_icon} alt="google" />
+          <div className="flex gap-4">
+            <img src={assets.facebook_icon} alt="facebook" loading="lazy" />
+            <img src={assets.twitter_icon} alt="twitter" loading="lazy" />
+            <img src={assets.googleplus_icon} alt="google plus" loading="lazy" />
           </div>
         </div>
       </div>

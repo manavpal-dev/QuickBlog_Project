@@ -23,7 +23,8 @@ const Layout = () => {
           onClick={() => navigate("/")}
           className="cursor-pointer w-2/5 sm:w-1/4 md:w-2/8 lg:w-1/8"
           src={assets.logo}
-          alt="logo"
+          alt="QuickBlog logo"
+          loading="lazy"
         />
         <button
           onClick={logout}

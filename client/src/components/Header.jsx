@@ -20,9 +20,8 @@ const Header = () => {
       <div className="text-center mt-20 mb-8">
         <div className="inline-flex items-center justify-center gap-4 px-6 py-1.5 mb-4 border border-indigo-400 bg-indigo-600/22 rounded-full text-sm text-indigo-500">
           <p>New: AI feature integrated</p>
-          <img src={assets.star_icon} alt="star icon" className="w-3.5" />
-        </div>
-
+          <img src={assets.star_icon} alt="star icon" className="w-3.5" loading="lazy" />
+          </div>
         <div className="mt-7 text-3xl font-semibold text-center sm:text-6xl text-gray-700 sm:leading-16"></div>
         <h1 className="text-3xl sm:text-6xl font-semibold sm:leading-16">
           Your own <span className="text-blue-800"> blogging</span> <br />{" "}
@@ -68,8 +67,9 @@ const Header = () => {
       {/* background color use  */}
       <img
         src={assets.gradientBackground}
-        alt=""
+        alt="background gradient"
         className="absolute -top-50 -z-1 opacity-50"
+        loading="lazy"
       />
     </div>
   );

@@ -7,7 +7,7 @@ const Footer = () => {
     <div className="bg-[#F9F8FE]">
       <div className="lg:flex justify-between items-center px-10">
         <div className="px-4 py-8">
-          <img className="" src={assets.logo} alt="" />
+          <img className="" src={assets.logo} alt="QuickBlog logo" loading="lazy" />
           <p className="font-medium max-w-[410px] mt-6 text-gray-500">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum unde
             quaerat eveniet cumque accusamus atque qui error quo enim fugiat?

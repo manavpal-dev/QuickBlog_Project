@@ -38,7 +38,7 @@ const Dashboard = () => {
     <div className="bg-blue-50/50 flex-1 p-4 md:p-10 h-screen">
       <div className="flex flex-wrap gap-4">
         <div className="flex items-center gap-4 bg-white p-4 min-w-58 rounded shadow cursor-pointer hover:scale-105 transition-all">
-          <img src={assets.dashboard_icon_1} alt="" />
+          <img src={assets.dashboard_icon_1} alt="dashboard icon 1" loading="lazy" />
           <div>
             <p className="text-xl font-semibold text-gray-600">
               {dashboard.blogs}
@@ -48,7 +48,7 @@ const Dashboard = () => {
         </div>
 
         <div className="flex items-center gap-4 bg-white p-4 min-w-58 rounded shadow cursor-pointer hover:scale-105 transition-all">
-          <img src={assets.dashboard_icon_2} alt="" />
+          <img src={assets.dashboard_icon_2} alt="dashboard icon 2" loading="lazy" />
           <div>
             <p className="text-xl font-semibold text-gray-600">
               {dashboard.comments}
@@ -58,7 +58,7 @@ const Dashboard = () => {
         </div>
 
         <div className="flex items-center gap-4 bg-white p-4 min-w-58 rounded shadow cursor-pointer hover:scale-105 transition-all">
-          <img src={assets.dashboard_icon_3} alt="" />
+          <img src={assets.dashboard_icon_3} alt="dashboard icon 3" loading="lazy" />
           <div>
             <p className="text-xl font-semibold text-gray-600">
               {dashboard.drafts}
@@ -71,7 +71,7 @@ const Dashboard = () => {
       {/* For bottom container */}
       <div>
         <div className="flex items-center gap-3 m-4 mt-6 text-gray-600">
-          <img src={assets.dashboard_icon_4} alt="" />
+          <img src={assets.dashboard_icon_4} alt="latest blogs icon" loading="lazy" />
           <p>Latest Blogs</p>
         </div>
 

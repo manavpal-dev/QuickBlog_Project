@@ -11,7 +11,8 @@ const Navbar = () => {
         onClick={() => navigate("/")}
         src={assets.logo}
         className="w-32 sm:w-44 cursor-pointer"
-        alt="logo"
+        alt="QuickBlog logo"
+        loading="lazy"
       />
 
       <button
@@ -19,7 +20,7 @@ const Navbar = () => {
         className="flex items-center gap-2 rounded-full cursor-pointer bg-[#007AFF] text-white px-5 py-2.5 text-sm"
       >
         {token ? 'Dashboard' : 'Login'}
-        <img className="w-3" src={assets.arrow} alt="arrow" />
+        <img className="w-3" src={assets.arrow} alt="arrow icon" loading="lazy" />
       </button>
     </div>
   );
